@@ -1,0 +1,41 @@
+<div [@routerTransition]>
+    <h2 class="text-muted">Dashboard <small>Statistics Overview</small></h2>
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <ngb-carousel>
+                <ng-template *ngFor="let slider of sliders" ngbSlide>
+                    <img
+                        [src]="slider.imagePath"
+                        alt="Random first slide"
+                        class="img-fluid mx-auto d-block"
+                        width="100%"
+                    />
+                    <div class="carousel-caption">
+                        <h3>{{ slider.label }}</h3>
+                        <p>{{ slider.text }}</p>
+                    </div>
+                </ng-template>
+            </ngb-carousel>
+        </div>
+    </div>
+    <hr /> -->
+    <div class="row">
+        <div class="col-xl-3 col-lg-6 mb-3">
+            <app-stat [bgClass]="'primary'" [count]="users" [icon]="'fa-users'" [label]="'Total number of Members'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-3">
+            <app-stat [bgClass]="'secondary'" [count]="shops" [icon]="'fa-shopping-bag'" [label]="'Total number of Shops'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-3">
+            <app-stat [bgClass]="'success'" [count]="orders" [icon]="'fa-shopping-cart'" [label]="'Total number of Orders'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-6 mb-3">
+            <app-stat [bgClass]="'warning'" [count]="current_month_order" [icon]="'fa-calendar-check-o'" [label]="month"></app-stat>
+        </div>
+        <!-- <div class="col-xl-3 col-lg-6 mb-3">
+            <app-stat [bgClass]="'danger'" [count]="130" [icon]="'fa-shopping-bag'" [label]="'Shop List'"></app-stat>
+        </div> -->
+    </div>
+    <hr />
+    <app-charts></app-charts>
+</div>

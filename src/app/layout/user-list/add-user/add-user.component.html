@@ -1,0 +1,141 @@
+<kendo-dialog *ngIf="active" [width]="450" [height]="600" (close)="closeForm()">
+    <kendo-dialog-titlebar class="">
+        {{ isNew ? "Add New" : "Edit" }}
+    </kendo-dialog-titlebar>
+    <form novalidate class="k-form k-form-md" [formGroup]="userForm">
+        <fieldset class="k-form-fieldset">
+            <kendo-floatinglabel text="Name *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="username"
+                />
+            </kendo-floatinglabel>
+            <div class="form-group">
+                <label for="file">Photo</label><br />
+                <input
+                    type="file"
+                    class="form-control-file mt-2"
+                    formControlName="photo"
+                    (change)="uploadEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Photo"
+                />
+            </div>
+            <kendo-floatinglabel text="Email *">
+                <input
+                    kendoTextBox
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                />
+                <kendo-formerror
+                    [hidden]="
+                        userForm.controls.email.valid ||
+                        userForm.controls.email.pristine
+                    "
+                    >Error: invalid email Format!
+                    Eg:example@gmail.com</kendo-formerror
+                >
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Phone *">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <kendo-dropdownlist
+                            formControlName="phonecode"
+                            [data]="countryCodeData"
+                            [defaultItem]="{
+                                phonecode: '95'
+                            }"
+                            [textField]="'phonecode'"
+                            [valueField]="'phonecode'"
+                            [valuePrimitive]="true"
+                        >
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="col-sm-8">
+                        <input
+                            kendoTextBox
+                            type="phone"
+                            class="form-control"
+                            formControlName="phone"
+                            [maxlength]="11"
+                        />
+                    </div>
+                </div>
+
+                <kendo-formerror
+                    [hidden]="
+                        userForm.controls.phone.valid ||
+                        userForm.controls.phone.pristine
+                    "
+                    >Error: invalid phone number format! Eg:e
+                    09123456789</kendo-formerror
+                >
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Password *" *ngIf="isNew">
+                <input
+                    kendoTextBox
+                    type="password"
+                    class="form-control"
+                    formControlName="password"
+                />
+                <kendo-formerror
+                    [hidden]="
+                        userForm.controls.password.valid ||
+                        userForm.controls.password.pristine
+                    "
+                    >Error: Start with uppercase letter,at least one numeric
+                    character,at least one special character, Minimum password
+                    length is {{ minPasswordLength }}.</kendo-formerror
+                >
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Role " *ngIf="!isNew">
+                <kendo-dropdownlist
+                    formControlName="role"
+                    [data]="roleData"
+                    [defaultItem]="{
+                                role: 'Choose...',
+                            }"
+                    [textField]="'role'"
+                    [valueField]="'role'"
+                    [valuePrimitive]="true"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Latitude">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="lat"
+                />
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Longitude">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="long"
+                />
+            </kendo-floatinglabel>
+        </fieldset>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="btn btn-outline-primary" (click)="onCancel($event)">
+            Cancel
+        </button>
+        <button
+            class="btn btn-primary"
+            [disabled]="!userForm.valid"
+            (click)="onSave($event)"
+        >
+            Save
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>

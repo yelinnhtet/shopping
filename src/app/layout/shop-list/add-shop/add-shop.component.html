@@ -1,0 +1,166 @@
+<kendo-dialog *ngIf="active" [width]="450" [height]="600" (close)="closeForm()">
+    <kendo-dialog-titlebar class="">
+        {{ isNew ? "Add New" : "Edit" }}
+    </kendo-dialog-titlebar>
+    <form novalidate class="k-form k-form-md" [formGroup]="shopForm">
+        <fieldset class="k-form-fieldset">
+            <kendo-floatinglabel text="Agent Code">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="agent_code"
+                />
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="Name *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="name"
+                />
+            </kendo-floatinglabel>
+
+            <div class="form-group">
+                <label for="file">Logo</label><br />
+                <input
+                    type="file"
+                    class="form-control-file mt-2"
+                    formControlName="logo"
+                    (change)="uploadLogoEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldLogoImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Logo"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="file">Cover Photo</label><br />
+                <input
+                    type="file"
+                    multiple
+                    class="form-control-file mt-2"
+                    formControlName="cover_photo"
+                    (change)="uploadCoverEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldCoverImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Cover Photo"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="file">Shopkeeper NRC</label><br />
+                <input
+                    type="file"
+                    multiple
+                    class="form-control-file mt-2"
+                    formControlName="shopkeeper_nrc"
+                    (change)="uploadNrcEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldNrcImageUrl"
+                    width="400"
+                    height="160"
+                    alt="NRC Photo"
+                />
+            </div>
+
+            <kendo-floatinglabel text="NRC *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="nrc"
+                /> </kendo-floatinglabel
+            ><kendo-floatinglabel text="Country *">
+                <kendo-dropdownlist
+                    formControlName="country_id"
+                    (valueChange)="onChangeCountry()"
+                    [loading]="isCountryLoading"
+                    [data]="countryData"
+                    [defaultItem]="{ name: 'Choose ...', id: null }"
+                    [textField]="'name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="State *">
+                <kendo-dropdownlist
+                    formControlName="state_id"
+                    (valueChange)="onChangeState()"
+                    [loading]="isStateLoading"
+                    [data]="stateData"
+                    [defaultItem]="{ name: 'Choose ...', id: null }"
+                    [textField]="'name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                    [readonly]="isCountry"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="City *">
+                <kendo-dropdownlist
+                    formControlName="city_id"
+                    [loading]="isCityLoading"
+                    [data]="cityData"
+                    [defaultItem]="{ name: 'Choose ...', id: null }"
+                    [textField]="'name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                    [readonly]="isState"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="Address *">
+                <kendo-textarea
+                    formControlName="address"
+                    [rows]="3"
+                    resizable="vertical"
+                ></kendo-textarea>
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="Latitude">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="lat"
+                />
+            </kendo-floatinglabel>
+
+            <kendo-floatinglabel text="Longitude">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="long"
+                />
+            </kendo-floatinglabel>
+        </fieldset>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="btn btn-outline-primary" (click)="onCancel($event)">
+            Cancel
+        </button>
+        <button
+            class="btn btn-primary"
+            [disabled]="shopForm.invalid"
+            (click)="onSave($event)"
+        >
+            Save
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>

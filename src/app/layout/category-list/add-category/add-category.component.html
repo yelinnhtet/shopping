@@ -1,0 +1,53 @@
+<kendo-dialog *ngIf="active" [width]="450" [height]="600" (close)="closeForm()">
+    <kendo-dialog-titlebar class="">
+        {{ isNew ? "Add New" : "Edit" }}
+    </kendo-dialog-titlebar>
+    <form novalidate class="k-form k-form-md" [formGroup]="categoryForm">
+        <fieldset class="k-form-fieldset">
+            <kendo-floatinglabel text="Name *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="name"
+                />
+            </kendo-floatinglabel>
+            <div class="form-group">
+                <label for="file">Photo</label><br />
+                <input
+                    type="file"
+                    class="form-control-file mt-2"
+                    formControlName="image"
+                    (change)="uploadEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Image"
+                />
+            </div>
+            <kendo-floatinglabel text="Percentage *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="percentage"
+                />
+            </kendo-floatinglabel>
+        </fieldset>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="btn btn-outline-primary" (click)="onCancel($event)">
+            Cancel
+        </button>
+        <button
+            class="btn btn-primary"
+            [disabled]="!categoryForm.valid"
+            (click)="onSave($event)"
+        >
+            Save
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>

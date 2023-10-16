@@ -1,0 +1,36 @@
+<!-- <div class="row">
+    <div class="col-xl-12">
+        <h2 class="page-header">
+            {{ heading }}
+        </h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <i class="fa fa-dashboard"></i> <a [routerLink]="['/dashboard']" href="Javascript:void(0)">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active"><i class="fa {{ icon }}"></i> {{ heading }}</li>
+        </ol>
+    </div>
+</div>
+ -->
+<div class="row">
+    <div class="col-xl-12">
+        <h2 class="page-header">
+            {{ heading }}
+        </h2>
+        <div class="border-left pr-3 mr-1 clearfix d-none d-lg-inline"></div>
+        <ol class="breadcrumb icon-angle-right bg-transparent p-0 mb-0 mt-lg-2 mt-3">
+            <li class="breadcrumb-item">
+                <a href="Javascript:void(0)" [routerLink]="['/dashboard']" class="text-primary"
+                    ><i class="fa fa-dashboard mr-sm-2"></i> <span class="d-none d-sm-inline"> Dashboard</span></a
+                >
+            </li>
+            <li class="breadcrumb-item" *ngIf="subheading != null">
+                <a href="javascript:history.back()" class="text-primary"
+                    ><i class="fas fa-list-ul mr-sm-2 d-sm-none"></i>
+                    <span class="d-none d-sm-inline"> {{ subheading }}</span></a
+                >
+            </li>
+            <li class="breadcrumb-item active" [ngClass]="{ 'd-none': heading == 'Welcome' }">{{ heading }}</li>
+        </ol>
+    </div>
+</div>

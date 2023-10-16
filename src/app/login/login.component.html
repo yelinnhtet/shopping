@@ -1,0 +1,52 @@
+<div [@routerTransition] class="login-page">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img
+                class="user-avatar"
+                src="assets/images/rcepmall-logo.png"
+                width="150px"
+            />
+            <h1>RCEP Mall</h1>
+            <form [formGroup]="loginForm">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Email' | translate"
+                            class="form-control input-underline input-lg"
+                            type="text"
+                            formControlName="email"
+                        />
+                        <span
+                            class="k-tooltip k-tooltip-validation"
+                            *ngIf="requireName"
+                        >
+                            User Name is required
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Password' | translate"
+                            class="form-control input-underline input-lg"
+                            type="password"
+                            formControlName="password"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <span
+                            class="k-tooltip k-tooltip-validation"
+                            *ngIf="loginfail"
+                        >
+                            {{ errors }}
+                        </span>
+                    </div>
+                </div>
+                <a (click)="onLoggedin()" class="btn rounded-btn">{{
+                    "Log in" | translate
+                }}</a>
+                &nbsp;
+                <a [routerLink]="['/signup']" class="btn rounded-btn">{{ 'Register' | translate }}</a>
+            </form>
+        </div>
+    </div>
+</div>

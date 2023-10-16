@@ -1,0 +1,287 @@
+<kendo-dialog *ngIf="active" [width]="450" [height]="600" (close)="closeForm()">
+    <kendo-dialog-titlebar class="">
+        {{ isNew ? "Add New" : "Edit" }}
+    </kendo-dialog-titlebar>
+    <form novalidate class="k-form k-form-md" [formGroup]="productForm">
+        <fieldset class="k-form-fieldset">
+            <kendo-floatinglabel text="Name *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="name"
+                />
+            </kendo-floatinglabel>
+            <div class="form-group">
+                <label for="file">Photo</label><br />
+                <input
+                    type="file"
+                    multiple
+                    class="form-control-file mt-2"
+                    formControlName="photo"
+                    (change)="uploadEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Image"
+                />
+            </div>
+            <kendo-floatinglabel text="Shop *">
+                <kendo-dropdownlist
+                    formControlName="shop_id"
+                    [loading]="isShopLoading"
+                    [data]="shopData"
+                    [defaultItem]="{ name: 'Choose ...', id: null }"
+                    [textField]="'name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Category *">
+                <kendo-dropdownlist
+                    formControlName="category_id"
+                    [loading]="isCategoryLoading"
+                    [data]="categoryData"
+                    [defaultItem]="{ name: 'Choose ...', id: null }"
+                    [textField]="'name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Currency *">
+                <kendo-dropdownlist
+                    formControlName="currency_id"
+                    [loading]="isCategoryLoading"
+                    [data]="currencyData"
+                    [defaultItem]="{ currency_name: 'Choose ...', id: null }"
+                    [textField]="'currency_name'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                >
+                </kendo-dropdownlist>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Price *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="price"
+                />
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="Discount">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="discount"
+                />
+            </kendo-floatinglabel>
+            <!-- <kendo-floatinglabel text="Quantity *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="qty"
+                />
+            </kendo-floatinglabel> -->
+            <kendo-floatinglabel text="Description ">
+                <kendo-textarea
+                    formControlName="description"
+                    [rows]="3"
+                    resizable="vertical"
+                ></kendo-textarea>
+            </kendo-floatinglabel>
+
+            <div class="row m-auto">
+                <div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div formArrayName="para_name">
+                                <div
+                                    *ngFor="
+                                        let name of getFormArrayControls(
+                                            'para_name'
+                                        );
+                                        let i = index
+                                    "
+                                    class="row"
+                                >
+                                    <div class="col-10">
+                                        <div class="mb-3">
+                                            <label
+                                                for="Color"
+                                                class="form-label mt-3"
+                                                >Color {{ i + 1 }}</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                [formControlName]="i"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div formArrayName="para_value">
+                                <div
+                                    *ngFor="
+                                        let value of getFormArrayControls(
+                                            'para_value'
+                                        );
+                                        let i = index
+                                    "
+                                    class="row"
+                                >
+                                    <div class="col-8">
+                                        <div class="mb-3">
+                                            <label
+                                                for="Qty"
+                                                class="form-label mt-3"
+                                                >Qty {{ i + 1 }}</label
+                                            >
+                                            <input
+                                                type="number"
+                                                class="form-control"
+                                                [formControlName]="i"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <a
+                                            type="button"
+                                            (click)="
+                                                removePara(
+                                                    'para_name',
+                                                    'para_value',
+                                                    i
+                                                )
+                                            "
+                                            class="form-label mt-5 text-danger"
+                                            >Remove</a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a
+                                type="button"
+                                (click)="addPara()"
+                                class="form-label mt-3 mx-2"
+                                ><b>Add Parameter</b></a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-auto">
+                <div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div formArrayName="spec_name">
+                                <div
+                                    *ngFor="
+                                        let name of getFormArrayControls(
+                                            'spec_name'
+                                        );
+                                        let i = index
+                                    "
+                                    class="row"
+                                >
+                                    <div class="col-10">
+                                        <div class="mb-3">
+                                            <label
+                                                for="Size"
+                                                class="form-label mt-3"
+                                                >Size {{ i + 1 }}</label
+                                            >
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                [formControlName]="i"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div formArrayName="spec_value">
+                                <div
+                                    *ngFor="
+                                        let value of getFormArrayControls(
+                                            'spec_value'
+                                        );
+                                        let i = index
+                                    "
+                                    class="row"
+                                >
+                                    <div class="col-8">
+                                        <div class="mb-3">
+                                            <label
+                                                for="Price"
+                                                class="form-label mt-3"
+                                                >Price {{ i + 1 }}</label
+                                            >
+                                            <input
+                                                type="number"
+                                                class="form-control"
+                                                [formControlName]="i"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <a
+                                            type="button"
+                                            (click)="
+                                                removePara(
+                                                    'spec_name',
+                                                    'spec_value',
+                                                    i
+                                                )
+                                            "
+                                            class="form-label mt-5 text-danger"
+                                            >Remove</a
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a
+                                type="button"
+                                (click)="addSpec()"
+                                class="form-label mt-3 mx-2"
+                                ><b>Add Specification</b></a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="btn btn-outline-primary" (click)="onCancel($event)">
+            Cancel
+        </button>
+        <button
+            class="btn btn-primary"
+            [disabled]="productForm.invalid"
+            (click)="onSave($event)"
+        >
+            Save
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>

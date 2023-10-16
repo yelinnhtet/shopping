@@ -1,0 +1,205 @@
+<div [@routerTransition]>
+    <app-page-header
+        [heading]="'Promotions List'"
+        [icon]="'fa-table'"
+    ></app-page-header>
+    <div class="container mt-3">
+        <kendo-grid
+            [data]="view | async"
+            [pageSize]="gridState.take"
+            [loading]="view['gridLoading']"
+            [pageable]="{
+                buttonCount: 5,
+                info: true,
+                type: 'input',
+                pageSizes: true,
+                previousNext: true
+            }"
+            [skip]="gridState.skip"
+            [sort]="gridState.sort"
+            [filter]="gridState.filter"
+            [filterable]="true"
+            [sortable]="true"
+            [scrollable]="'false'"
+            [resizable]="true"
+            (dataStateChange)="onStateChange($event)"
+        >
+            <ng-template kendoGridToolbarTemplate let-dataItem>
+                <button
+                    (click)="addHandler()"
+                    kendoGridAddCommand
+                    class="btn btn-success"
+                >
+                    <i class="k-icon k-i-plus"></i> Add New
+                </button>
+            </ng-template>
+            <kendo-grid-command-column title="Action" width="180">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button
+                        kendoButton
+                        (click)="editHandler(dataItem)"
+                        [iconClass]="'fa fa-pencil'"
+                        title="Edit"
+                        class="mr-2"
+                    ></button>
+                    <button
+                        kendoButton
+                        (click)="
+                            showDeleteConfirmation(dialogActions, dataItem)
+                        "
+                        [iconClass]="'fa fa-trash'"
+                        title="Delete"
+                        class="me-2"
+                    ></button>
+                </ng-template>
+                <ng-template #dialogActions>
+                    <button class="btn btn-outline-primary" (click)="close()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteItem()">
+                        Delete
+                    </button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <!-- <kendo-grid-column
+                field="role"
+                title="Role"
+                [groupable]="false"
+                [width]="280"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-dropdownlist
+                        [(ngModel)]="role"
+                        (valueChange)="onChangeRole($event)"
+                        [data]="userRole"
+                        [defaultItem]="{
+                            role: 'All ...'
+                        }"
+                        [textField]="'role'"
+                        [valueField]="'role'"
+                        [valuePrimitive]="true"
+                    >
+                    </kendo-dropdownlist>
+                </ng-template>
+            </kendo-grid-column> -->
+            <kendo-grid-column
+                field="title"
+                title="Title"
+                [groupable]="false"
+                [width]="180"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column title="Image">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <img
+                        src="{{ imageUrl + dataItem.image }}"
+                        onerror=" this.src = imageUrl + 'default-photo.jpg' "
+                        height="70"
+                        width="100"
+                        alt="Ads Image"
+                    />
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+                field="start_date"
+                title="Start Date"
+                [groupable]="false"
+                [width]="180"
+                [format]="'yyyy-mm-dd'"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+                field="end_date"
+                title="End Date"
+                [groupable]="false"
+                [width]="180"
+                [format]="'yyyy-mm-dd'"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell
+                    >
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+                field="type_name"
+                title="Type"
+                [groupable]="false"
+                [width]="120"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell
+                    >
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+                field="status_name"
+                title="Status"
+                [groupable]="false"
+                [width]="80"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell
+                    >
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <app-add-promotion [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()">
+		</app-add-promotion>
+        <div kendoDialogContainer></div>
+    </div>
+</div>

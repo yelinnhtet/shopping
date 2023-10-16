@@ -1,0 +1,123 @@
+<kendo-dialog *ngIf="active" [width]="450" [height]="600" (close)="closeForm()">
+    <kendo-dialog-titlebar class="">
+        {{ isNew ? "Add New" : "Edit" }}
+    </kendo-dialog-titlebar>
+    <form novalidate class="k-form k-form-md" [formGroup]="promotionForm">
+        <fieldset class="k-form-fieldset">
+            <kendo-floatinglabel text="Title *">
+                <input
+                    kendoTextBox
+                    class="form-control"
+                    formControlName="title"
+                />
+            </kendo-floatinglabel>
+            <div class="form-group">
+                <label for="file">Photo</label><br />
+                <input
+                    type="file"
+                    class="form-control-file mt-2"
+                    formControlName="image"
+                    (change)="uploadEventHandler($event)"
+                />
+                <img
+                    class="mt-3"
+                    *ngIf="!isNew"
+                    [src]="oldImageUrl"
+                    width="400"
+                    height="160"
+                    alt="Image"
+                />
+            </div>
+            <kendo-floatinglabel text="Start Date *">
+                <kendo-datepicker
+                    placeholder="Choose start date ..."
+                    formControlName="start_date"
+
+                ></kendo-datepicker>
+            </kendo-floatinglabel>
+            <kendo-floatinglabel text="End Date *">
+                <kendo-datepicker
+                    placeholder="Choose end date ..."
+                    formControlName="end_date"
+                ></kendo-datepicker>
+            </kendo-floatinglabel>
+            <kendo-formfield orientation="horizontal" showHints="initial">
+                <kendo-label text="Status *"></kendo-label>
+
+                <ul class="k-radio-list k-list-horizontal">
+                    <li class="k-radio-item">
+                        <input
+                            type="radio"
+                            #start
+                            value="0"
+                            kendoRadioButton
+                            formControlName="status"
+                        />
+                        <kendo-label [for]="start" text="Start"></kendo-label>
+                    </li>
+
+                    <li class="k-radio-item">
+                        <input
+                            type="radio"
+                            #finished
+                            value="1"
+                            kendoRadioButton
+                            formControlName="status"
+                        />
+                        <kendo-label
+                            [for]="finished"
+                            text="Finished"
+                        ></kendo-label>
+                    </li>
+                </ul>
+
+                <!-- <kendo-formerror>Error: This field is required</kendo-formerror> -->
+            </kendo-formfield>
+            <kendo-formfield orientation="horizontal" showHints="initial">
+                <kendo-label text="Type *"></kendo-label>
+
+                <ul class="k-radio-list k-list-horizontal">
+                    <li class="k-radio-item">
+                        <input
+                            type="radio"
+                            #second
+                            value="1"
+                            kendoRadioButton
+                            formControlName="type"
+                        />
+                        <kendo-label [for]="second" text="Second Sale"></kendo-label>
+                    </li>
+
+                    <li class="k-radio-item">
+                        <input
+                            type="radio"
+                            #flash
+                            value="2"
+                            kendoRadioButton
+                            formControlName="type"
+                        />
+                        <kendo-label
+                            [for]="flash"
+                            text="Flash Sale"
+                        ></kendo-label>
+                    </li>
+                </ul>
+
+                <!-- <kendo-formerror>Error: This field is required</kendo-formerror> -->
+            </kendo-formfield>
+        </fieldset>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="btn btn-outline-primary" (click)="onCancel($event)">
+            Cancel
+        </button>
+        <button
+            class="btn btn-primary"
+            [disabled]="promotionForm.invalid"
+            (click)="onSave($event)"
+        >
+            Save
+        </button>
+    </kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,58 @@
+<div [@routerTransition] class="login-page">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img class="user-avatar" src="assets/images/rcepmall-logo.png" width="150px" />
+            <h1>RCEP Mall</h1>
+            <form [formGroup]="signUpForm">
+                <div class="form-content">
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Full Name' | translate"
+                            class="form-control input-underline input-lg"
+                            type="text"
+                            formControlName="username"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Email' | translate"
+                            class="form-control input-underline input-lg"
+                            type="text"
+                            formControlName="email"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Phone' | translate"
+                            class="form-control input-underline input-lg"
+                            type="text"
+                            formControlName="phone"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <input
+                            [placeholder]="'Password' | translate"
+                            class="form-control input-underline input-lg"
+                            type="password"
+                            formControlName="password"
+                        />
+                    </div>
+                    <!-- <div class="form-group">
+                        <input
+                            [placeholder]="'Repeat Password' | translate"
+                            class="form-control input-underline input-lg"
+                            type="password"
+                            formControlName="comfirm_password"
+                        />
+                    </div> -->
+                </div>
+                <a (click)="onSignUp()" class="btn rounded-btn">{{ 'Register' | translate }}</a
+                >&nbsp;
+                <a [routerLink]="['/login']" class="btn rounded-btn">{{ 'Log in' | translate }}</a>
+            </form>
+        </div>
+    </div>
+</div>

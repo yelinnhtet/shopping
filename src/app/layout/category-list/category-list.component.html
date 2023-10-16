@@ -1,0 +1,114 @@
+<div [@routerTransition]>
+    <app-page-header
+        [heading]="'Category List'"
+        [icon]="'fa-table'"
+    ></app-page-header>
+    <div class="container mt-3">
+        <kendo-grid
+            [data]="view | async"
+            [pageSize]="gridState.take"
+            [loading]="view['gridLoading']"
+            [pageable]="{
+                buttonCount: 5,
+                info: true,
+                type: 'input',
+                pageSizes: true,
+                previousNext: true
+            }"
+            [skip]="gridState.skip"
+            [sort]="gridState.sort"
+            [filter]="gridState.filter"
+            [filterable]="true"
+            [sortable]="true"
+            [scrollable]="'false'"
+            [resizable]="true"
+            (dataStateChange)="onStateChange($event)"
+        >
+            <ng-template kendoGridToolbarTemplate let-dataItem>
+                <button
+                    (click)="addHandler()"
+                    kendoGridAddCommand
+                    class="btn btn-success"
+                >
+                    <i class="k-icon k-i-plus"></i> Add New
+                </button>
+            </ng-template>
+            <kendo-grid-command-column title="Action" width="210">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button
+                        kendoButton
+                        (click)="editHandler(dataItem)"
+                        [iconClass]="'fa fa-pencil'"
+                        title="Edit"
+                        class="mb-2 me-2"
+                    ></button>
+                    <button
+                        kendoButton
+                        (click)="
+                            showDeleteConfirmation(dialogActions, dataItem)
+                        "
+                        [iconClass]="'fa fa-trash'"
+                        title="Delete"
+                        class="mb-2 me-2"
+                    ></button>
+                </ng-template>
+                <ng-template #dialogActions>
+                    <button class="btn btn-outline-primary" (click)="close()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteItem()">
+                        Delete
+                    </button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-column field="name" title="Name">
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column title="Image">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <img
+                        src="{{ imageUrl + dataItem.image }}"
+                        onerror=" this.src = imageUrl + 'defaultPhoto.jpg' "
+                        height="70"
+                        width="100"
+                        alt="Ads Image"
+                    />
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="percentage" title="Percentage">
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <app-add-category
+            [model]="editDataItem"
+            [isNew]="isNew"
+            (save)="saveHandler($event)"
+            (cancel)="cancelHandler()"
+        >
+        </app-add-category>
+        <div kendoDialogContainer></div>
+    </div>
+</div>

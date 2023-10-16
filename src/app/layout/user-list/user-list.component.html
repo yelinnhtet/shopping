@@ -1,0 +1,139 @@
+<div [@routerTransition]>
+    <app-page-header
+        [heading]="header"
+        [icon]="'fa-table'"
+    ></app-page-header>
+    <div class="container mt-3">
+        <!-- <h2 class="text-center">User List</h2> -->
+        <kendo-grid
+            [data]="view | async"
+            [pageSize]="gridState.take"
+            [loading]="view['gridLoading']"
+            [pageable]="{
+                buttonCount: 5,
+                info: true,
+                type: 'input',
+                pageSizes: true,
+                previousNext: true
+            }"
+            [skip]="gridState.skip"
+            [sort]="gridState.sort"
+            [filter]="gridState.filter"
+            [filterable]="true"
+            [sortable]="true"
+            [scrollable]="'false'"
+            [resizable]="true"
+            (dataStateChange)="onStateChange($event)"
+        >
+            <ng-template kendoGridToolbarTemplate let-dataItem>
+                <button
+                    (click)="addHandler()"
+                    kendoGridAddCommand
+                    class="btn btn-success"
+                >
+                    <i class="k-icon k-i-plus"></i> Add New
+                </button>
+            </ng-template>
+            <kendo-grid-command-column title="Action" width="210">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button
+                        kendoButton
+                        (click)="editHandler(dataItem)"
+                        [iconClass]="'fa fa-pencil'"
+                        title="Edit"
+                        class="mb-2 me-2"
+                    ></button>
+                    <button
+                        kendoButton
+                        (click)="
+                            showDeleteConfirmation(dialogActions, dataItem)
+                        "
+                        [iconClass]="'fa fa-trash'"
+                        title="Delete"
+                        class="mb-2 me-2"
+                    ></button>
+                    <kendo-switch
+                        title="Change Status"
+                        [size]="'small'"
+                        [checked]="dataItem.status === 'on'"
+                        (click)="changeStatus(dataItem.status, dataItem.id)"
+                        class="mb-2 me-2"
+                    ></kendo-switch>
+                    <!-- <button *ngIf="u_id == 3"
+                        kendoButton
+                        (click)="
+                            changeUserType(dataItem)
+                        "
+                        [iconClass]="'fa fa-exchange'"
+                        title="Change User Type"
+                        class="mb-2 me-2"
+                    ></button> -->
+                </ng-template>
+                <ng-template #dialogActions>
+                    <button class="btn btn-outline-primary" (click)="close()">
+                        Cancel
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteItem()">
+                        Delete
+                    </button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-column field="name" title="Name">
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="email" title="Email">
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-grid-string-filter-cell
+                        [showOperators]="false"
+                        [column]="column"
+                        [filter]="filter"
+                    >
+                    </kendo-grid-string-filter-cell>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column
+                field="role"
+                title="Role"
+                [groupable]="false"
+                [width]="280"
+            >
+                <ng-template
+                    kendoGridFilterCellTemplate
+                    let-filter
+                    let-column="column"
+                >
+                    <kendo-dropdownlist
+                        [(ngModel)]="role"
+                        (valueChange)="onChangeRole($event)"
+                        [data]="userRole"
+                        [defaultItem]="{
+                            role: 'All ...'
+                        }"
+                        [textField]="'role'"
+                        [valueField]="'role'"
+                        [valuePrimitive]="true"
+                    >
+                    </kendo-dropdownlist>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+        <app-add-user [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()">
+		</app-add-user>
+        <div kendoDialogContainer></div>
+    </div>
+</div>
